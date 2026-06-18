@@ -12,9 +12,11 @@ public class Movies extends GridPane {
 
     ComboBox genreCombo;
     ComboBox registeredCombo;
+    LibraryInterface service;
 
     /** sets up the movies gui */
-    public Movies() {
+    public Movies(LibraryInterface service) {
+        this.service = service;
 
         //create labels
         Text text1 = new Text("Genre:");
@@ -69,10 +71,14 @@ public class Movies extends GridPane {
             String genreName = (String) genreCombo.getValue();
             String movieName = textField1.getText();
             if (genreName != null && !movieName.isEmpty()) {
-                int genreId = DBHelper.getGenreId(genreName);
-                DBHelper.addMovie(movieName, genreId);
-                textField1.clear();
-                loadMovies();
+                try {
+                    int genreId = service.getGenreId(genreName);
+                    service.addMovie(movieName, genreId);
+                    textField1.clear();
+                    loadMovies();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         });
 
@@ -80,25 +86,37 @@ public class Movies extends GridPane {
         button2.setOnAction(e -> {
             String selected = (String) registeredCombo.getValue();
             if (selected != null) {
-                DBHelper.removeMovie(selected);
-                loadMovies();
+                try {
+                    service.removeMovie(selected);
+                    loadMovies();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         });
     }
 
     /** loads genres into the dropdown */
     void loadGenres() {
-        genreCombo.getItems().clear();
-        genreCombo.getItems().addAll(DBHelper.getGenreNames());
+        try {
+            genreCombo.getItems().clear();
+            genreCombo.getItems().addAll(service.getGenreNames());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     /** loads movies for the selected genre */
     void loadMovies() {
-        registeredCombo.getItems().clear();
-        String genreName = (String) genreCombo.getValue();
-        if (genreName != null) {
-            int genreId = DBHelper.getGenreId(genreName);
-            registeredCombo.getItems().addAll(DBHelper.getMovieTitles(genreId));
+        try {
+            registeredCombo.getItems().clear();
+            String genreName = (String) genreCombo.getValue();
+            if (genreName != null) {
+                int genreId = service.getGenreId(genreName);
+                registeredCombo.getItems().addAll(service.getMovieTitles(genreId));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 }

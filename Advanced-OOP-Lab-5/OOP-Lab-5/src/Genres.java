@@ -10,9 +10,11 @@ import javafx.scene.text.Text;
 public class Genres extends GridPane {
 
     ComboBox comboBox;
+    LibraryInterface service;
 
     /** sets up the genres gui */
-    public Genres() {
+    public Genres(LibraryInterface service) {
+        this.service = service;
 
         //create labels
         Text text1 = new Text("Name:");
@@ -56,9 +58,13 @@ public class Genres extends GridPane {
         button1.setOnAction(e -> {
             String name = textField1.getText();
             if (!name.isEmpty()) {
-                DBHelper.addGenre(name);
-                textField1.clear();
-                loadGenres();
+                try {
+                    service.addGenre(name);
+                    textField1.clear();
+                    loadGenres();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         });
 
@@ -66,15 +72,23 @@ public class Genres extends GridPane {
         button2.setOnAction(e -> {
             String selected = (String) comboBox.getValue();
             if (selected != null) {
-                DBHelper.removeGenre(selected);
-                loadGenres();
+                try {
+                    service.removeGenre(selected);
+                    loadGenres();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         });
     }
 
     /** refreshes the combo box with genres from db */
     void loadGenres() {
-        comboBox.getItems().clear();
-        comboBox.getItems().addAll(DBHelper.getGenreNames());
+        try {
+            comboBox.getItems().clear();
+            comboBox.getItems().addAll(service.getGenreNames());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

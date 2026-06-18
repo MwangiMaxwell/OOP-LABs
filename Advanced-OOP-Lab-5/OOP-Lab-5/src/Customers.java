@@ -10,9 +10,11 @@ import javafx.scene.text.Text;
 public class Customers extends GridPane {
 
     ComboBox comboBox;
+    LibraryInterface service;
 
     /** sets up the customers gui */
-    public Customers() {
+    public Customers(LibraryInterface service) {
+        this.service = service;
 
         //create labels
         Text text1 = new Text("Name:");
@@ -69,11 +71,15 @@ public class Customers extends GridPane {
         button1.setOnAction(e -> {
             String name = textField1.getText();
             if (!name.isEmpty()) {
-                DBHelper.addCustomer(name);
-                textField1.clear();
-                textField2.clear();
-                textField3.clear();
-                loadCustomers();
+                try {
+                    service.addCustomer(name);
+                    textField1.clear();
+                    textField2.clear();
+                    textField3.clear();
+                    loadCustomers();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         });
 
@@ -81,15 +87,23 @@ public class Customers extends GridPane {
         button2.setOnAction(e -> {
             String selected = (String) comboBox.getValue();
             if (selected != null) {
-                DBHelper.removeCustomer(selected);
-                loadCustomers();
+                try {
+                    service.removeCustomer(selected);
+                    loadCustomers();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         });
     }
 
     /** refreshes the combo box with customers from db */
     void loadCustomers() {
-        comboBox.getItems().clear();
-        comboBox.getItems().addAll(DBHelper.getCustomerNames());
+        try {
+            comboBox.getItems().clear();
+            comboBox.getItems().addAll(service.getCustomerNames());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

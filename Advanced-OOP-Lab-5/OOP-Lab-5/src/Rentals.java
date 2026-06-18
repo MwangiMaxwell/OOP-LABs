@@ -14,9 +14,11 @@ public class Rentals extends GridPane {
     ComboBox moviesCombo;
     ComboBox borrowedCombo;
     ComboBox returnedCombo;
+    LibraryInterface service;
 
     /** sets up the rentals gui */
-    public Rentals() {
+    public Rentals(LibraryInterface service) {
+        this.service = service;
 
         //create labels
         Text text1 = new Text("Customer:");
@@ -80,11 +82,15 @@ public class Rentals extends GridPane {
 
         //when genre is picked, show its movies
         genreCombo.setOnAction(e -> {
-            moviesCombo.getItems().clear();
-            String genreName = (String) genreCombo.getValue();
-            if (genreName != null) {
-                int genreId = DBHelper.getGenreId(genreName);
-                moviesCombo.getItems().addAll(DBHelper.getMovieTitles(genreId));
+            try {
+                moviesCombo.getItems().clear();
+                String genreName = (String) genreCombo.getValue();
+                if (genreName != null) {
+                    int genreId = service.getGenreId(genreName);
+                    moviesCombo.getItems().addAll(service.getMovieTitles(genreId));
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         });
 
@@ -93,10 +99,14 @@ public class Rentals extends GridPane {
             String customerName = (String) customerCombo.getValue();
             String movieTitle = (String) moviesCombo.getValue();
             if (customerName != null && movieTitle != null) {
-                int clientId = DBHelper.getCustomerId(customerName);
-                int movieId = DBHelper.getMovieId(movieTitle);
-                DBHelper.rentMovie(clientId, movieId);
-                loadRentals();
+                try {
+                    int clientId = service.getCustomerId(customerName);
+                    int movieId = service.getMovieId(movieTitle);
+                    service.rentMovie(clientId, movieId);
+                    loadRentals();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         });
 
@@ -105,35 +115,47 @@ public class Rentals extends GridPane {
             String customerName = (String) customerCombo.getValue();
             String movieTitle = (String) borrowedCombo.getValue();
             if (customerName != null && movieTitle != null) {
-                int clientId = DBHelper.getCustomerId(customerName);
-                DBHelper.returnMovie(clientId, movieTitle);
-                loadRentals();
+                try {
+                    int clientId = service.getCustomerId(customerName);
+                    service.returnMovie(clientId, movieTitle);
+                    loadRentals();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         });
     }
 
     /** loads customers and genres into the dropdowns */
     void loadData() {
-        customerCombo.getItems().clear();
-        customerCombo.getItems().addAll(DBHelper.getCustomerNames());
+        try {
+            customerCombo.getItems().clear();
+            customerCombo.getItems().addAll(service.getCustomerNames());
 
-        genreCombo.getItems().clear();
-        genreCombo.getItems().addAll(DBHelper.getGenreNames());
+            genreCombo.getItems().clear();
+            genreCombo.getItems().addAll(service.getGenreNames());
 
-        moviesCombo.getItems().clear();
-        borrowedCombo.getItems().clear();
-        returnedCombo.getItems().clear();
+            moviesCombo.getItems().clear();
+            borrowedCombo.getItems().clear();
+            returnedCombo.getItems().clear();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     /** loads borrowed and returned movies for the selected customer */
     void loadRentals() {
-        borrowedCombo.getItems().clear();
-        returnedCombo.getItems().clear();
-        String customerName = (String) customerCombo.getValue();
-        if (customerName != null) {
-            int clientId = DBHelper.getCustomerId(customerName);
-            borrowedCombo.getItems().addAll(DBHelper.getBorrowedMovies(clientId));
-            returnedCombo.getItems().addAll(DBHelper.getReturnedMovies(clientId));
+        try {
+            borrowedCombo.getItems().clear();
+            returnedCombo.getItems().clear();
+            String customerName = (String) customerCombo.getValue();
+            if (customerName != null) {
+                int clientId = service.getCustomerId(customerName);
+                borrowedCombo.getItems().addAll(service.getBorrowedMovies(clientId));
+                returnedCombo.getItems().addAll(service.getReturnedMovies(clientId));
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 }

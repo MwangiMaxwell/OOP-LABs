@@ -1,4 +1,14 @@
-javac --module-path "C:\javafx-sdk-21\lib" --add-modules javafx.controls,javafx.fxml -cp "lib\mysql-connector-j-8.0.33.jar" src\*.java
+Teammate 1 (Server):
+javac -cp "lib\mysql-connector-j-8.0.33.jar" src\LibraryInterface.java src\LibraryImpl.java src\DBHelper.java src\Server.java
+java -cp "src;lib\mysql-connector-j-8.0.33.jar" Server
 
+Teammate 2 (Admin Client):
+javac --module-path "C:\javafx-sdk-21\lib" --add-modules javafx.controls,javafx.fxml src\LibraryInterface.java src\Genres.java src\Movies.java src\Customers.java src\AdminClient.java
+java --module-path "C:\javafx-sdk-21\lib" --add-modules javafx.controls,javafx.fxml -cp "src" AdminClient
 
-java --module-path "C:\javafx-sdk-21\lib" --add-modules javafx.controls,javafx.fxml -cp "src;lib\mysql-connector-j-8.0.33.jar" VideoLibrarySystem
+Teammate 3 (Customer Client):
+javac --module-path "C:\javafx-sdk-21\lib" --add-modules javafx.controls,javafx.fxml src\LibraryInterface.java src\Rentals.java src\CustomerClient.java
+java --module-path "C:\javafx-sdk-21\lib" --add-modules javafx.controls,javafx.fxml -cp "src" CustomerClient
+
+mysql -u root
+SELECT * FROM Genres;
