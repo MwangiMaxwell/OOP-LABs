@@ -1,0 +1,42 @@
+ - Download dbfxapp folder from elearning
+
+ - Unzip the folder to your desktop
+
+ - Compile all java files, remember you have to cd into the folder and also it contains JavaFX code e.g. for myself I compiled using javac --module-path "C:\Program Files\Java\javafx-sdk-26.0.1\lib" --add-modules javafx.controls,javafx.fxml *.java
+
+____________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
+ - Visit https://dev.mysql.com/downloads/connector/j/ and download the plartform Independent JDBC Driver
+
+ - Unzip the downloaded folder and look for a .jar file, copy this and paste to the dbfxapp folder
+
+ - Launch your Xampp localhost server (Apache and MySQL), Revisit Lab 3 on this
+
+ - Open a CMD/Terminal for MySQL/MARIA DB and run the below SQL Queries
+
+ 	CREATE DATABASE school;
+
+	USE school;
+
+	CREATE TABLE students (
+    	 	id INT PRIMARY KEY,
+    		name VARCHAR(50),
+    		age INT
+	);
+
+	INSERT INTO students VALUES (1, 'Samuel', 25), (2, 'Rose', 20), (3, 'Linda', 28);
+
+ - Do not close this CMD/Terminal
+___________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
+ - Go back to the CMD where you compiled all the java codes
+
+ - Run the JDBC Program using the command java -cp ".;C:\Users\admin\Desktop\Mine\mysql-connector-j-9.7.0.jar" JDBCDemo
+
+____________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
+Try the second exercise to Run Gener.java Program found in the same folder
+
+ - For the 2nd exercise you have to add module paths to both JavaFX and JDBC e.g. for myself I used the command java --module-path "C:\Program Files\Java\javafx-sdk-26.0.1\lib;C:\Users\admin\Desktop\VLS\mysql-connector-j-9.7.0.jar" --add-modules javafx.controls,javafx.fxml
+
+ - You also have to create the database for the code hint is found in the code itself

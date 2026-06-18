@@ -1,0 +1,31 @@
+CREATE DATABASE IF NOT EXISTS vls_db;
+USE vls_db;
+
+CREATE TABLE IF NOT EXISTS Genres (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    genre TEXT NOT NULL,
+    isactive BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE IF NOT EXISTS Movies (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    genre_id INT NOT NULL,
+    Title TEXT NOT NULL,
+    isactive BOOLEAN DEFAULT TRUE,
+    FOREIGN KEY (genre_id) REFERENCES Genres(id)
+);
+
+CREATE TABLE IF NOT EXISTS Clients (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    Fullname TEXT NOT NULL,
+    isactive BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE IF NOT EXISTS Rentals (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    client_id INT NOT NULL,
+    movie_id INT NOT NULL,
+    Returned BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (client_id) REFERENCES Clients(id),
+    FOREIGN KEY (movie_id) REFERENCES Movies(id)
+);
