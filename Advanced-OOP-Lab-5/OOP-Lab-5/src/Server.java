@@ -3,7 +3,7 @@ import java.rmi.registry.LocateRegistry;
 
 /**
  * this is the main server file
- * your teammate will run this file on their laptop
+ * run by the server person
  */
 public class Server {
     public static void main(String[] args) {

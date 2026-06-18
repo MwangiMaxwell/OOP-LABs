@@ -8,7 +8,7 @@ import java.rmi.Naming;
 
 /**
  * customer client application
- * this is run by the customer teammate
+ * this is run by the customer
  */
 public class CustomerClient extends Application {
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * the server implementation of our video library service
- * it just calls DBHelper to do the actual database work
+ * it just calls DBHelper
  */
 public class LibraryImpl extends UnicastRemoteObject implements LibraryInterface {
 

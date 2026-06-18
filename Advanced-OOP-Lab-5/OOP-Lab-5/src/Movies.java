@@ -6,7 +6,7 @@ import javafx.scene.text.Text;
 
 /**
  * movies screen - admin can add and remove movies here
- * you pick a genre first then add a movie under it
+ * pick a genre first then add a movie under it
  */
 public class Movies extends GridPane {
 

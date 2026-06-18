@@ -8,7 +8,7 @@ import java.rmi.Naming;
 
 /**
  * admin client application
- * this is run by the admin teammate
+ * this is run by the admin
  */
 public class AdminClient extends Application {
 
